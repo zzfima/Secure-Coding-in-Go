@@ -8,7 +8,7 @@ import (
 
 // CreateCountryTable : create Country table
 func CreateCountryTable() error {
-	db, e := sql.Open("sqlite3", "./cars.db")
+	db, e := sql.Open("sqlite3", "./country.db")
 	if e != nil {
 		return e
 	}
@@ -25,7 +25,7 @@ func CreateCountryTable() error {
 
 // InsertIntoCountryTable : create Country table
 func InsertIntoCountryTable(id int, name string) error {
-	db, e := sql.Open("sqlite3", "./cars.db")
+	db, e := sql.Open("sqlite3", "./country.db")
 	if e != nil {
 		return e
 	}
@@ -49,7 +49,7 @@ type Country struct {
 // ReadFromCountryTable : read countries from db
 func ReadFromCountryTable() ([]Country, error) {
 	countries := []Country{}
-	db, e := sql.Open("sqlite3", "./cars.db")
+	db, e := sql.Open("sqlite3", "./country.db")
 	if e != nil {
 		return nil, e
 	}
