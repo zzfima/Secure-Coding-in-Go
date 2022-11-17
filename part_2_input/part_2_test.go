@@ -18,9 +18,19 @@ func TestCountryDB(t *testing.T) {
 	require.Equal(t, "UK", countries[0].Name)
 }
 
-func TestLogDB(t *testing.T) {
+func TestCreateAndInsertLogDB(t *testing.T) {
 	db, _ := OpenDB()
 	CreateTables(db)
 	defer db.Close()
 	InsertLog(db, "today is go day", time.Now())
+	//executed query:
+	//"INSERT INTO logs (time, message) VALUES ('2022-11-17 06:24:40', 'Hallow!');"
+}
+
+func TestInsertInjectionLogDB(t *testing.T) {
+	db, _ := OpenDB()
+	defer db.Close()
+	InsertLog(db, "Hacked!'); DROP TABLE logs; --", time.Now())
+	//executed query:
+	//"INSERT INTO logs (time, message) VALUES ('2022-11-17 06:26:00', 'Hacked!'); DROP TABLE logs; --');"
 }
