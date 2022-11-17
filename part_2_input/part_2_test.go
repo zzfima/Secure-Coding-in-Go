@@ -19,7 +19,8 @@ func TestCountryDB(t *testing.T) {
 }
 
 func TestLogDB(t *testing.T) {
-	db, _ := CreateDB()
+	db, _ := OpenDB()
+	CreateTables(db)
 	defer db.Close()
 	InsertLog(db, "today is go day", time.Now())
 }

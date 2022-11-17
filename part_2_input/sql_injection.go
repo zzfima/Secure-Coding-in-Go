@@ -2,6 +2,7 @@ package part2
 
 import (
 	"database/sql"
+	_ "embed"
 	"fmt"
 	"time"
 
@@ -9,40 +10,29 @@ import (
 )
 
 var (
+	//go:embed schema.sql
 	schemaSQL string
+	//go:embed insert.sql
 	insertSQL string
 )
 
-// CreateTables create SQL table by using local schemaSQL
-func CreateTables(db *sql.DB) error {
-	r, e := db.Exec(schemaSQL)
-	fmt.Println(r)
-	return e
+// OpenDB open db
+func OpenDB() (*sql.DB, error) {
+	db, e := sql.Open("sqlite3", "./Logs.db")
+	return db, e
 }
 
-// CreateDB create db
-func CreateDB() (*sql.DB, error) {
-	db, e := sql.Open("sqlite3", "./Logs.db")
-	if e != nil {
-		return nil, e
-	}
-
-	stmt, e := db.Prepare("CREATE TABLE IF NOT EXISTS Log (ID INTEGER PRIMARY KEY, Message TEXT, Time TIME)")
-	if e != nil {
-		return nil, e
-	}
-	stmt.Exec()
-
-	return db, nil
+// CreateTables create SQL table by using local schemaSQL
+func CreateTables(db *sql.DB) error {
+	_, e := db.Exec(schemaSQL)
+	return e
 }
 
 // InsertLog insert log into db: message and time
 func InsertLog(db *sql.DB, message string, time time.Time) error {
-	stmt, e := db.Prepare("INSERT INTO Log (Message, Time) VALUES (?, ?)")
-	if e != nil {
-		return e
-	}
-	stmt.Exec(message, time)
-
-	return nil
+	ts := time.Format("2006-01-02 15:04:05")
+	sqlQuery := fmt.Sprintf(insertSQL, ts, message)
+	res, e := db.Exec(sqlQuery)
+	fmt.Println(res)
+	return e
 }
