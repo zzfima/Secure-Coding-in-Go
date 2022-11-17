@@ -14,6 +14,8 @@ var (
 	schemaSQL string
 	//go:embed insert.sql
 	insertSQL string
+	//go:embed insert_fixed.sql
+	insertSQLFixed string
 )
 
 // OpenDB open db
@@ -33,6 +35,13 @@ func InsertLog(db *sql.DB, message string, time time.Time) error {
 	ts := time.Format("2006-01-02 15:04:05")
 	sqlQuery := fmt.Sprintf(insertSQL, ts, message)
 	res, e := db.Exec(sqlQuery)
+	fmt.Println(res)
+	return e
+}
+
+// InsertLogFixed log into db: message and time
+func InsertLogFixed(db *sql.DB, message string, time time.Time) error {
+	res, e := db.Exec(insertSQLFixed, time, message)
 	fmt.Println(res)
 	return e
 }

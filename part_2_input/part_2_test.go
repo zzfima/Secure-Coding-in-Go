@@ -34,3 +34,11 @@ func TestInsertInjectionLogDB(t *testing.T) {
 	//executed query:
 	//"INSERT INTO logs (time, message) VALUES ('2022-11-17 06:26:00', 'Hacked!'); DROP TABLE logs; --');"
 }
+
+func TestInsertFixedLogDB(t *testing.T) {
+	db, e := OpenDB()
+	require.Nil(t, e)
+	defer db.Close()
+	e = InsertLogFixed(db, "Hacked!'); DROP TABLE logs; --", time.Now())
+	require.Nil(t, e)
+}
