@@ -42,3 +42,7 @@ func TestInsertFixedLogDB(t *testing.T) {
 	e = InsertLogFixed(db, "Hacked!'); DROP TABLE logs; --", time.Now())
 	require.Nil(t, e)
 }
+
+func TestRunServerTimeoutsDDOS(t *testing.T) {
+	RunServerTimeoutsDDOS()
+}
