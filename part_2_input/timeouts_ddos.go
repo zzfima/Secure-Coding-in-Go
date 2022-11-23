@@ -19,12 +19,23 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("%d bytes in %v", n, time.Since(start))
-	fmt.Fprintf(w, "%d bytes digested", n)
+	//log.Printf("%d bytes in %v", n, time.Since(start))
+	fmt.Fprintf(w, "%d bytes digested in %v", n, time.Since(start))
 }
 
 // RunServerTimeoutsDDOS ...
 func RunServerTimeoutsDDOS() {
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
+
+	srv := http.Server{
+		Addr:              ":8080",
+		ReadTimeout:       1 * time.Second,
+		WriteTimeout:      1 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+		IdleTimeout:       10 * time.Second,
+	}
+
+	if e := srv.ListenAndServe(); e != nil {
+		log.Fatal(e)
+	}
 }
