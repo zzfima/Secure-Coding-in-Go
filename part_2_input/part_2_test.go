@@ -43,6 +43,10 @@ func TestInsertFixedLogDB(t *testing.T) {
 	require.Nil(t, e)
 }
 
-func TestRunServerTimeoutsDDOS(t *testing.T) {
-	RunServerTimeoutsDDOS()
+func TestRunServerTimeoutsYesDDOS(t *testing.T) {
+	RunServerTimeoutsYesDDOS()
+}
+
+func TestRunServerSizeYesLimiting(t *testing.T) {
+	RunServerSizeYesLimiting()
 }

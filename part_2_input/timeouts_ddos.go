@@ -23,8 +23,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%d bytes digested in %v", n, time.Since(start))
 }
 
-// RunServerTimeoutsDDOS ...
-func RunServerTimeoutsDDOS() {
+// RunServerTimeoutsYesDDOS ...
+func RunServerTimeoutsYesDDOS() {
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":8080", nil)
+}
+
+// RunServerTimeoutsNoDDOS ...
+func RunServerTimeoutsNoDDOS() {
 	http.HandleFunc("/", handler)
 
 	srv := http.Server{
